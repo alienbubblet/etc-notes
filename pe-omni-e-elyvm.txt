@@ -1,0 +1,316 @@
+
+#$date	20150315
+##surf	103_2 compiler try to install clang and llc (llvm)
+Use sudo apt-get
+http://askubuntu.com/questions/309786/llvm-and-clang-installation-on-ubuntu
+sudo apt-get install llvm
+sudo apt-get install clang
+
+Build with the code if you like to do-it-yourself.
+http://clang.llvm.org/get_started.html
+http://llvm.org/docs/GettingStarted.html#requirements
+(Not my way~~)
+#$end
+
+##tip	linux: alias, unalias
+http://dywang.csie.cyut.edu.tw/moodle23/dywang/linuxSystem/node88.html
+alias xh='echo Hello' xw='echo `echo world!`'
+xh && xw	# print Hello\n world!\n
+alias xh	# show the alias of xh, which is 'echo Hello' in this case
+unalias xh	# to unalias ah, of course
+#$end
+
+##tip	linux: sudo apt-get install/remove/purge
+http://blog.lyhdev.com/2013/01/ubuntu-linux-apt-get.html
+sudo apt-get install llvm-3.2	# to install llvm-3.2
+sudo apt-get remove --auto-remove llvm-3.2	# to remove llvm-3.2 and some config files
+sudo apt-get purge llvm-3.2	# to remove 	# to remove completely
+#$end
+
+#$date	20150317
+##omni	linux: 如何檢查Linux的版本 
+http://dragonspring.pixnet.net/blog/post/32738271
+cat /etc/issue	# worked in Ubuntu 12.04.4 LTS
+cat /etc/*release	# worked
+uname -r	# worked, but show the kernel version, not the linux distr version
+#$end
+
+#key	gparted feje asked for help, about ubuntu disk partition
+
+
+#$date	20150317
+##omni	tmux: novice, primer
+http://blog.hawkhost.com/2010/06/28/tmux-the-terminal-multiplexer/
+Ctrl-b ? List all keybindings
+Ctrl-b : type the tmux command
+
+// A windows contains many panes.
+// A tmux session contains many windows.
+// basic commands
+Ctrl-b c Create new window
+Ctrl-b " split the current pane into =
+Ctrl-b % split the current pane into o|o
+Ctrl-b w (List all windows / window numbers)
+Ctrl-b <Left>/<Right>/<Up>/<Down> switch to __ pane
+Ctrl-b Ctrl/M+<L/R/U/D> a quick way to resize the pane 
+Ctrl-b ! break pane (move the pane to an independent window)
+
+// just "exit" to kill a pane is fine for me
+Ctrl-b d Detach current client
+Ctrl-b & Kill the current window
+Ctrl-b , Rename the current window
+Ctrl-b q Show pane numbers (used to switch between panes)
+Ctrl-b o Switch to the next pane
+
+Ctrl-b <window number> (Move to the specified window number, the default bindings are from 0 – 9)
+Ctrl-b n (Move to the next window)
+Ctrl-b p (Move to the previous window)
+Ctrl-b l (Move to the previously selected window)
+Ctrl-b { (Move the current pane left)
+Ctrl-b } (Move the current pane right)
+
+preference file: ~/.tmux.conf
+refer to Ctrl-b ? for commnads, I'll skip this part.
+
+For more advanced usage, hawk wrote a part-II tutorial.
+(covers client mode and other features.)
+
+#$end
+
+##omni	git diff vs git diff --cached, drop changes
+C (current index tree / working tree/ unstaged changes)
+B (staging area)
+A (HEAD)
+
+A vs B	git diff --cached or git diff --statged
+B vs C	git diff
+A vs C	git diff HEAD
+
+http://stackoverflow.com/questions/52704/how-do-you-discard-unstaged-changes-in-git
+drop C changes	git checkout -- . or git checkout .
+http://makandracards.com/makandra/621-git-delete-a-branch-local-or-remote
+git branch -d local_branch
+
+git checkout -b new_branch_name
+or
+git checkout where_to_branch
+git branch new_branch_name
+git checkout new_branch_name
+BTW,
+git commit has to be clean before you can switch to another branch.
+#$end
+
+##omni	it's all about style
+http://stackoverflow.com/questions/3650623/trailing-underscores-for-member-variables-in-c
+like part of it http://geosoft.no/development/cppstyle.html
+http://google-styleguide.googlecode.com/svn/trunk/cppguide.html#Variable_Names
+
+Use 0 instead of NULL?
+http://stackoverflow.com/questions/176989/do-you-use-null-or-0-zero-for-pointers-in-c
+#lang	en	like this phrase "don't sweat the small stuff"
+#$end
+
+
+#$date	20150318
+##omnit	cpp virtual function
+(my bk absolute c++)
+(p648)
+virtual function, late binding, polymorphism
+if a function in its base class is declared virtual,
+it's also virutal in all its derived class, no matter you specify it or not.
+(But it's recommended that you specify it for clarity)
+
+pure virtual function, abstract class
+virtual void myFunction() = 0; // no implementation
+(a class with one or more pure virtual function is called an abstract class)
+#$end
+
+##omni	git	git add --patch or git add -p, add part of your code only
+http://stackoverflow.com/questions/1085162/commit-only-part-of-a-file-in-git
+#$end
+
+##omni	cpp	hpp vs h, by convention, hpp match no cpp file
+useful convention for templates
+#$end
+##omni	git	git branch new_branch_name <rev> to create a branch on <rev>
+useful tip when forgetting to create a new branch before committing to a detached head
+#$end
+
+##omni	cpp	cpp manpage just like c, sudo apt-get install libstdc++6-4.4-doc
+http://stackoverflow.com/questions/5293737/where-are-the-man-pages-for-c
+#$end
+
+##omni,quest	cpp	weird bug, string might be mistaken for string when overloading
+ #include <iostream>
+ using namespace std;
+ void func(bool a){
+ 	cout << "a" << endl;
+ }
+ void func(string b){
+ 	cout << "b" << endl;
+ }
+ int main(){
+ 	func(true);
+	func("This is mistaken.");
+	return 0;
+ }
+#$end
+#omni,quest	cpp	how to call constructor in a constructor ... (-std=c++0x doesn't work)
+
+
+
+#$date	20150320
+##omni	like:cpp	function declaration or class-variable declaration
+Remember when you want to explicitly declare a class variable
+by default constructor ... like this
+ #include <iostream>
+class A{};
+int main(){
+public:
+	A(){
+		std::cout<<"Hello world\n";
+	}
+	A a();
+};
+int main(){
+	A x();
+	return 0;
+}
+And you'll find no hello world is printed.
+That's because compiler consider it to be a function pointer declaration.
+
+The same rule applies to ..
+A x(A());
+I thought I am calling A(A&) to initialize my class-variable x.
+But, hell no. Compiler thinks you are declaring a function pointer of type A(*)(A(*)())that
+that takes another function pointer (of type A(*)()) as parameter.
+// WTF -v-
+// by calling a whatever function like this - x.hello() - it's a nice way
+// to let compiler tell you that the type of x (since x does not have a whatever function)
+#$end
+
+##omni	git	git lg abbreviation
+http://denny0223.github.io/SITCON-workshop-2014-ncku-git/#51
+http://onlywei.github.io/explain-git-with-d3/#branch
+#$end
+
+#lang	en	fully-fledged
+##surf,omni	project list List of Top Ten College Mini Projects in c/c++ with full source code
+http://www.codeincodeblock.com/2012/04/list-of-top-ten-college-mini-projects.html
+#$end
+
+##omni,surf	like: cpp	string method find_first_of find_first_not_of
+http://www.mochima.com/tutorials/strings.html
+#$end
+
+##quest,surf	tmux	how to send ctrl-pageup/down to vim in tmux
+http://stackoverflow.com/questions/16638962/sending-ctrl-right-to-vim-inside-tmux
+tmux seems to disable the ctrl-pageup/down shortcut keys?
+#$end
+
+
+#$date	20150323
+##omni	totry: cpp	pointer to member function, and static member function
+http://stackoverflow.com/questions/12247970/error-in-assignment-of-member-in-read-only-object
+http://www.codeguru.com/cpp/cpp/article.php/c17401/C-Tutorial-PointertoMember-Function.htm
+I still don't get it... about pointer to member function.
+
+The pointer to static member function is the same as the function pointer.
+#$end
+
+
+#$date	20150329
+##temp
+大家來學VIM（一個歷久彌新的編輯器）[三] 基本編輯指令 http://www.study-area.org/tips/vim/Vim-3.html
+A Simple C++ Project Structure http://hiltmon.com/blog/2013/07/03/a-simple-c-plus-plus-project-structure/
+vim tips and tricks http://www.cs.swarthmore.edu/help/vim/spelling.html
+Relative line numbers in Vim for super-fast movement http://jeffkreeftmeijer.com/2012/relative-line-numbers-in-vim-for-super-fast-movement/
+How to repeat the last movement command  http://vim.1045645.n5.nabble.com/How-to-repeat-the-last-movement-command-td1173323.html
+Switch encoding of terminal with a command http://askubuntu.com/questions/87227/switch-encoding-of-terminal-with-a-command
+Google C++ Style Guide https://google-styleguide.googlecode.com/svn/trunk/cppguide.html
+Git: what they didn’t tell you http://stevebennett.me/2014/02/26/git-what-they-didnt-tell-you/
+-
+Is it possible to downgrade gcc 4.6.1 to 4.4.x? http://askubuntu.com/questions/78253/is-it-possible-to-downgrade-gcc-4-6-1-to-4-4-x
+3.18.1 compile error using gcc 4.8 https://github.com/raspberrypi/linux/issues/758
+How to install gcc-4.8 http://askubuntu.com/questions/271388/how-to-install-gcc-4-8
+-
+http://askubuntu.com/questions/78253/is-it-possible-to-downgrade-gcc-4-6-1-to-4-4-x
+Ruby https://www.ruby-lang.org/zh_tw/downloads/
+Ruby https://ihower.tw/rails4/installation.html
+-
+http://askubuntu.com/questions/73160/how-do-i-find-the-amount-of-free-space-on-my-hard-drive
+http://askubuntu.com/questions/400807/is-there-an-easy-command-line-command-to-check-disk-space
+#$end
+
+
+
+#$date	2015402
+#dry	try to fix all the sloppy diaryup files
+##omni	git course TryGit
+I learn git before in a rough way.
+And it seemed to be a good time to relearn the git skills.
+https://try.github.io/levels/1/challenges/6
+
+(p1-9)
+git init
+git status
+git add <FILES>
+git commit <blahblah>
+git log # I prefer git lg, the decorated version
+--
+working directory & stage & repo
+--
+page 7 "don't forget the quote"
+git add *.txt vs git add "*.txt"
+only for current directory vs recursively
+
+
+(p10-17)
+git remote add origin https://github.com/try-git/try_git.git
+git push -u origin master
+	-u tells git to remember the parameters so that next time "git push" is enough
+git pull origin master
+-
+git diff HEAD
+git diff --staged dog.txt
+git reset dog.txt	# unstage
+git checkout -- <target.txt>
+
+(p18-21)
+git branch <new_branch_name>	# to create a branch (but not switch branch)
+git checkout <branch_name>	# to switch to branch
+~~~ git checkout -b <new_branch_name>	# create a new branch and also switch to the new branch
+
+(p22-)
+git checkout master
+#$end
+#sch	trivial: 20201010 0830 Saturday? commit dates of Try-Git XDD
+
+
+
+
+#$date	20150504
+##temp	tm0452 web addresses for the previous time (about two months ago)
+git
+https://try.github.io/wrap_up
+https://github.com/ElyanTest137git/try-git
+https://github.com/ElyanTest137git/try-git/commits/master
+https://www.codeschool.com/paths/git
+http://denny0223.github.io/SITCON-workshop-2014-ncku-git/#99
+-
+http://stackoverflow.com/questions/13148066/warning-push-default-is-unset-its-implicit-value-is-changing-in-git-2-0/13148313#13148313
+https://help.github.com/articles/generating-ssh-keys/
+-
+http://www.l-penguin.idv.tw/article/ssh-keygen.htm
+http://linux.vbird.org/linux_server/0310telnetssh.php
+-
+https://github.com/denny0223
+
+https://mail.google.com/mail/#inbox/14c7344c5e0af33c
+https://www.youtube.com/watch?v=tp5hgjD_Y5g
+#$end
+
+
+#$date	20150505
+
+

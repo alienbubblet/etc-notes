@@ -1,0 +1,115 @@
+
+git documentation are complete, clear and available.
+So, there is no need to repeat the redudant work.
+
+## git log with decoration, serving as simple gitk
+I first saw this on a SITCON workshop on version control.
+ - http://denny0223.github.io/SITCON-workshop-2014-ncku-git/#51
+```
+git config alias.lg "log --color --graph --all --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit --"
+```
+
+## small tips
+ - git alias prefiexed with exclaimation mark serves as shell command
+ - git tag: use to tags to name a commit you often checkout
+
+ - git fsck: find dangling blobs?
+ 	- git show <obj...> to check them
+ - git reflog: find sha1 of each commit? (secure hash algorithm)
+ 	- it's kind of weird to find git reflog --all sometimes displays a shorter list than git reflog does
+
+ - in the middle of of git rebase, you are actually on "no-branch". Just resolve the conflict and git add, then gir rebase --continue. the rebase complete!!! And by resolving the conflict that means git will automatically add the "conflicts" into those files. Edit them so that the file behaves properly.
+
+  - some fun fact about git: most commits are not actually removed right away. Instead, they exist without belonging to any branch, thus ignored by gitk, by us. They will be actually removed after the expire time is reached.
+  	- gitk --all # draw all branches at once
+	- gitk `git reflog --all | sed -E "s/\s.*$//g"` # and you will see the whole universe :XDDD:
+	- git fsck --unreachable # displays all commits that belong to no branch
+	- unrechable? dangling? loose objects?
+	- how to set the expire time?
+	- 
+
+ - the four basic units of gis storage? blobs, files, commit, and tag?
+
+ - git branch -m old_branch_name new branch_name
+	- # useful when you forget to switch between branches before editing
+	- also, changing branch names is not considered a change to commit
+ - and git checkout --orphan its_name [<start-point>]
+ 	- if all files are totally irrelevant, git rm * -rf
+
+
+ - a word about the git modal
+ 	- "Branches are cheap and easy."
+	- Cheap, yes. Easy? I'm still workng on it...
+ 	- master, topic (feature), development, experiment (test), hotfixes
+	- debates between git merge and git rebase
+	- similart to git merge --no-ff vs git merge --ff-only (default: fast-forwading)
+
+
+ - should study more on five modes of git reset
+
+ - There is another DVCS tool called mercurial. Seems to be a good extra material.
+ 	- http://mercurial.selenic.com/
+	- http://www.wikivs.com/wiki/Git_vs_Mercurial
+	- http://blog.twpug.org/416
+ - Also, what is subversion and CVS :=____=:
+ - And besides other version control tools, pros and cons about git should also be a good extra reading
+ 	- https://steveko.wordpress.com/2012/02/24/10-things-i-hate-about-git/
+	- the inconsistent commands ... e.g. (my experience): why git checkout --orphan orphan_brach_name [start_point] to create a orphan branch instead of using git branch commands ...
+
+ - note the subject and object of git merge and git rebase
+ - (on branch to-change A) git merge B
+ 	- add the difference of B into A
+	- B remains untouched
+ - (on branch to-change A) git rebase B
+ 	- B remains untouched too
+
+ - some thoughts or learning notes when doing the project ... should they be stored in the git repo?
+
+
+
+ - working tree, index (or staging area), repository
+ - in unit of commit
+ 	- w -> i     : git add
+ 	-      i -> r: git commit
+ 	- w -> i -> r: git commit -a
+ 	- delete w: rm, nothing to do with git
+ 	- delete i: git reset [--mixed]
+ 	- delete r: git reset --hard
+ 	- w <- i     : git checkout 
+	-      i <- r: git reset [--mixed]
+	- w <- i <- r: git reset --hard
+
+
+ - some interesting articles on versions control
+ 	- http://semver.org/
+	- http://docs.openstack.org/developer/pbr/semver.html
+	- http://tools.ietf.org/html/rfc2119	words for requirement level
+	- semantic versioning 2.0.0 mentions that public API should be declared at the very first time ---> seems to be a good to-try?
+	- http://nvie.com/posts/a-successful-git-branching-model/
+	- http://www.diaryofaninja.com/blog/2014/09/11/so-you-want-your-team-to-start-using-git-ndash-part-4-team-workflows
+ - some heated debates about under_score_case vs camelCase
+ 	- https://whathecode.wordpress.com/2011/02/10/camelcase-vs-underscores-scientific-showdown/
+ 	- http://www.nubaria.com/en/blog/?p=527
+ 	- other naming convetion: PascalCase? aka UpperCamelCase
+	- But I'd like to mention that personal preference should be assigned the lowest preference ...  
+		1. convention of current project
+		2. convention of your company/ development group
+		3. contention of the language (especially this one
+		4. personal preference
+	- Just reach an agreement at the beginning of a project
+
+
+	- git rebase --onto new_base original_base
+		- It took me about 3.5 hours to understand ...
+		- Use git rebase -i HEAD~N to pick is more easily I think
+		- It turns out I git rebase wrongly at the first place ....
+
+
+
+
+---temp---
+http://dictionary.reference.com/browse/innocuous?s=t
+www.diaryofaninja.com/blog/2014/09/11/so-you-want-your-team-to-start-using-git-ndash-part-4-team-workflows
+http://onlywei.github.io/explain-git-with-d3/#
+http://denny0223.github.io/SITCON-workshop-2014-ncku-git/#107
+
